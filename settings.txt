@@ -1,7 +1,7 @@
 [enableIRC]
 1
 [enableManualInput]
-0
+1
 [enableLog]
 1
 [ClientName]
