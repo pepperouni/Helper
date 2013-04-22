@@ -1,6 +1,6 @@
 Helper
 
-Helper is a really simple IRC, written enterily by me.
+Helper is a really simple IRC bot, written enterily by me.
 
 Requiered to run:
 
