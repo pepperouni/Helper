@@ -721,7 +721,7 @@ void ircEnd(std::string Message){
 void *ircMain(void *p){
     while(1){
 		/* If IRC is not enabled, suspend for 50 milliseconds */
-		if (Config.enableIRC==0)
+		if (Config.enableIRC==0 or (Config.enableIRC and !Config.IRCAutoConnect))
 			suspend(50);
 		/* If it is, try to connect */
         if (Config.enableIRC==1 && GotConnected==0 && Config.IRCAutoConnect==1){

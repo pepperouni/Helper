@@ -708,8 +708,10 @@ void CommandLine(typeMessage *Message){
 	if (Command==Ctype+"bet"){
 		if (!isIdentified(&User,Message))
 			return;
-		if (Arguments.size()==0)
+		if (Arguments.size()==0){
 			ircSendMessage("Place how much are you willing to bet!",getReceiver(Message));
+			return;
+		}
 		Arguments[0] = int_to_string( cash_to_float(Arguments[0]) );
 		if (!(is_number(Arguments[0]) and string_to_int(Arguments[0])>0)){
 			ircSendMessage("Invalid quantity.",getReceiver(Message));
