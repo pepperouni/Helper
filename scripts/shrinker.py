@@ -22,9 +22,11 @@ def Shrink(URL):
 	file = open("Handler.html", 'r+')
 	while 1:
 		line = file.readline()
-		if '</b><br><small>[<a href="' in line:
-			Start=line.index('</b><br><small>[<a href="')+len('</b><br><small>[<a href="');
-			End=line.index('" target="_blank"')
+		if '</b></blockquote>' in line:
+			line = file.readline()
+			line = file.readline()
+			Start=line.index('<blockquote><b>')+len('<blockquote><b>');
+			End=line.index('</b><div id="')
 			GotLink=line[Start:End]
 			break
 		if line=="":

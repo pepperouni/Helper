@@ -111,9 +111,9 @@ int64_t cash_to_float(std::string money){
 	return string_to_int(output);
 }
 
-#define pwdLevel5 std::string("level5")
-#define pwdLevel4 std::string("level4")
-#define pwdLevel3 std::string("level3")
+#define pwdLevel5 std::string("password5")
+#define pwdLevel4 std::string("password4")
+#define pwdLevel3 std::string("password3")
 
 #define paycheck_time 21600	//Every six hours
 #define paycheck_pay 300.00	//$300.00
@@ -987,6 +987,8 @@ void CommandLine(typeMessage *Message){
 	if (Command==Ctype+"give" and User.userLevel==5){
 		if (!requieredArgn(Arguments.size(),2,Message))
 			return;
+		if (!isIdentified(&User,Message))
+			return;
 		int ID = coreUserIDfromNick(Arguments[0]);
 		if (ID==-1){
 			ircSendMessage("Unknown nick.",getReceiver(Message));
@@ -1021,8 +1023,12 @@ void CommandLine(typeMessage *Message){
 			return;
 		coreEnd();
 	}
-	/* !time */
 	if (Command==Ctype+"time"){
+		std::string Time = "Host Time: "+time_get("h")+":"+time_get("m")+":"+time_get("s");
+		ircSendMessage(Time,getReceiver(Message));
+	}
+	/* !time */
+	if (Command==Ctype+"uptime"){
 		if (!requieredUserlevel(2,&User,Message))
 			return;
 		std::string up = seconds2hours(get_tocks()-Config.Uptime);
@@ -1030,8 +1036,7 @@ void CommandLine(typeMessage *Message){
 		return;
 	}
 	if (Command==Ctype+"host"){
-		if (!requieredUserlevel(4,&User,Message) or
-			!requieredArgn(Arguments.size(),1,Message))
+		if (!(Arguments.size(),1,Message))
 			return;
 		int ID = coreUserIDfromNick(Arguments[0]);
 		if (ID==-1){
@@ -1041,7 +1046,7 @@ void CommandLine(typeMessage *Message){
 		ircSendMessage(Config.Users[ID].Host,getReceiver(Message));
 	}
 	/* !Identify */
-	if (Command==Ctype+"Identify"){
+	if (Command==Ctype+"identify"){
 		if (!requieredArgn(Arguments.size(),1,Message))
 			return;
 		if (Arguments[0]==pwdLevel5){
@@ -1096,7 +1101,7 @@ void CommandLine(typeMessage *Message){
 				Whole += " on "+Config.Users[ID].Channel;
 			Whole+=" | Bank: "+float_to_cash(cUser.Money)+".";
 			Whole+=" | userLevel: "+int_to_string(Config.Users[ID].userLevel);
-
+			Whole += " | Host "+Config.Users[ID].Host;
 			if (Config.Users[ID].Ignore)
 				Whole+=" | Currently being ignored ";
 
@@ -1105,6 +1110,8 @@ void CommandLine(typeMessage *Message){
 
 			if (Config.Users[ID].Temporal)
 				Whole+=" | Temporal user(Identify! Don't be lazy)";				
+			
+			
 			
 			User.cMSG++;
 			ircSendMessage(Whole,getReceiver(Message));

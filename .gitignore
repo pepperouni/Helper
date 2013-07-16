@@ -1,3 +1,4 @@
 src/*.o
+src/geany_project
 ./helper
 !.gitignore

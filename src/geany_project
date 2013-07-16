@@ -1,2 +1,0 @@
-#!/bin/bash
-geany -i *.cpp *.h
